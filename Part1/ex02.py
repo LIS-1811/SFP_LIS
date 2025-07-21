@@ -1,0 +1,2 @@
+red="danger"
+print(red)
