@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import streamlit as st
 
 # Step 1: Set up a small food database (food: [calories, tag])
