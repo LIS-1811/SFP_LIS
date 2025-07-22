@@ -22,12 +22,12 @@ FOODS = {
     "sweet potato": [86, "filling"],
 
     # Protein / Meats / Seafood
-    "chicken breast": [165, "savory"],
-    "grilled tofu": [144, "savory"],
-    "salmon": [208, "savory"],
-    "tuna": [132, "savory"],
-    "shrimp": [99, "savory"],
-    "beef steak": [250, "savory"],
+    "chicken breast": [165, "savoury"],
+    "grilled tofu": [144, "savoury"],
+    "salmon": [208, "savoury"],
+    "tuna": [132, "savoury"],
+    "shrimp": [99, "savoury"],
+    "beef steak": [250, "savoury"],
     "boiled egg": [155, "protein"],
     "scrambled egg": [148, "protein"],
 
@@ -46,7 +46,7 @@ FOODS = {
     "soy milk": [33, "creamy"],
     "yogurt": [59, "creamy"],
     "greek yogurt": [97, "creamy"],
-    "cheese": [402, "savory"],
+    "cheese": [402, "savoury"],
 
     # Snacks / Treats
     "dark chocolate": [598, "chocolate"],
@@ -105,7 +105,7 @@ st.write("Create a daily meal plan based on your goals, calorie intake, cravings
 goal = st.selectbox("What is your goal?", ["Lose Weight", "Maintain Weight", "Gain Muscle"])
 max_calories = st.number_input("Daily calorie limit (min:800, max:4000)", min_value=800, max_value=4000, step=50)
 
-cravings = st.text_input("What are you craving today? (choose from: sweet, savory, chocolate, filling, nutty, protein, creamy, fresh)").lower()
+cravings = st.text_input("What are you craving today? (choose from: sweet, savoury, chocolate, filling, nutty, protein, creamy, fresh)").lower()
 favourites_input = st.text_input("Your favourite foods? (comma separated)").lower()
 favourite_foods = [f.strip() for f in favourites_input.split(",") if f]
 
