@@ -45,26 +45,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-# Sample DataFrame
-df = pd.DataFrame({
-    'Month': ['January', 'February', 'March', 'January'],
-    'Price': [1000, 1500, 2000, 1200]
-})
-
-# Add sidebar
-st.sidebar.header("Filters")
-
-# Add dropdown
-selected_month = st.sidebar.selectbox(
-    "Select Month",
-    options=df['Month'].unique()
-)
-
-# Add slider
-price_range = st.sidebar.slider(
-    "Select Price Range",
-    min_value=0,
-    max_value=3000,
-    value=(0, 3000)
-)
-
