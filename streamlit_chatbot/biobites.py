@@ -2,7 +2,7 @@ import streamlit as st
 import google.generativeai as genai
 
 # Configure Gemini API
-genai.configure(api_key="AIzaSyAbAsNYSboAyKF3FlwKZ3n49Rme2D45rW4")
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
 # Set up falling fruit background and theme
 def set_background():
