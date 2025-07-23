@@ -103,7 +103,7 @@ st.title("🥗 Diet Timetable Generator")
 st.write("Create a daily meal plan based on your goals, calorie intake, cravings, and favourite food.")
 
 goal = st.selectbox("What is your goal?", ["Lose Weight", "Maintain Weight", "Gain Muscle"])
-max_calories = st.number_input("Daily calorie limit (min:800, max:4000)", min_value=800, max_value=4000, step=50)
+max_calories = st.number_input("Daily calorie limit (min:1500, max:4000)", min_value=1500, max_value=4000, step=50)
 
 cravings = st.text_input("What are you craving today? (choose from: sweet, savoury, chocolate, filling, nutty, protein, creamy, fresh)").lower()
 favourites_input = st.text_input("Your favourite foods? (comma separated)").lower()
