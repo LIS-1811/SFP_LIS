@@ -9,9 +9,14 @@ FOODS = {
     "grapes": [69, "sweet"],
     "strawberries": [32, "sweet"],
     "blueberries": [57, "sweet"],
+    "mango": [60, "sweet"],
+    "pineapple": [50, "sweet"],
     "avocado": [160, "creamy"],
     "orange": [47, "fresh"],
     "watermelon": [30, "fresh"],
+    "kiwi": [41, "fresh"],
+    "papaya": [43, "fresh"],
+    "cherries": [50, "sweet"],
 
     # Vegetables
     "broccoli": [34, "fresh"],
@@ -20,6 +25,10 @@ FOODS = {
     "mushrooms": [22, "fresh"],
     "cucumber": [16, "fresh"],
     "sweet potato": [86, "filling"],
+    "kale": [35, "fresh"],
+    "pumpkin": [26, "fresh"],
+    "cauliflower": [25, "fresh"],
+    "edamame": [121, "protein"],
 
     # Protein / Meats / Seafood
     "chicken breast": [165, "savoury"],
@@ -30,6 +39,10 @@ FOODS = {
     "beef steak": [250, "savoury"],
     "boiled egg": [155, "protein"],
     "scrambled egg": [148, "protein"],
+    "tempeh": [195, "protein"],
+    "grilled lamb": [294, "savoury"],
+    "roasted duck": [337, "savoury"],
+    "chicken nuggets": [296, "savoury"],
 
     # Grains / Carbs
     "white rice": [130, "filling"],
@@ -40,6 +53,9 @@ FOODS = {
     "noodles": [138, "filling"],
     "pasta": [131, "filling"],
     "roti": [297, "filling"],
+    "tortilla": [218, "filling"],
+    "bagel": [250, "filling"],
+    "croissant": [406, "filling"],
 
     # Dairy & Alternatives
     "milk": [42, "creamy"],
@@ -47,17 +63,41 @@ FOODS = {
     "yogurt": [59, "creamy"],
     "greek yogurt": [97, "creamy"],
     "cheese": [402, "savoury"],
+    "butter": [717, "creamy"],
+    "cream cheese": [342, "creamy"],
+    "ice cream (dairy-free)": [207, "sweet"],
 
     # Snacks / Treats
-    "dark chocolate": [598, "chocolate"],
-    "milk chocolate": [535, "chocolate"],
     "cookies": [488, "sweet"],
     "ice cream": [207, "sweet"],
+    "cake slice": [350, "sweet"],
+    "doughnut": [452, "sweet"],
+    "potato chips": [536, "savoury"],
+    "nachos": [512, "savoury"],
+    "popcorn (buttered)": [375, "savoury"],
+    "mochi": [100, "sweet"],
+    "gummies": [330, "sweet"],
+    "pizza": [300, "savoury"],
+
+    # Nuts / Seeds / Spreads
     "peanut butter": [588, "nutty"],
     "almonds": [579, "nutty"],
     "cashews": [553, "nutty"],
-    "granola": [471, "filling"],
-    "protein bar": [350, "protein"]
+    "walnuts": [654, "nutty"],
+    "sunflower seeds": [584, "nutty"],
+    "chia seeds": [486, "nutty"],
+    "hazelnut spread": [541, "sweet"],
+
+    # Drinks
+    "orange juice": [45, "sweet"],
+    "apple juice": [46, "sweet"],
+    "coffee (black)": [2, "bitter"],
+    "latte": [150, "creamy"],
+    "bubble tea": [160, "sweet"],
+    "green tea": [0, "fresh"],
+    "protein shake": [200, "protein"],
+    "smoothie": [120, "sweet"],
+
 }
 
 # Step 2: Meal plan generator
@@ -100,12 +140,15 @@ def create_meal_plan(goal, max_calories, cravings, fav_foods):
 # Step 3: Build the Streamlit app
 st.title("🥗 Diet Timetable Generator")
 
-st.write("Create a daily meal plan based on your goals, calorie intake, cravings, and favourite food.")
+st.markdown(
+    "<p style='color:black; font-size:16px;'>Create a daily meal plan based on your goals, calorie intake, cravings, and favourite food.</p>",
+    unsafe_allow_html=True
+)
 
 goal = st.selectbox("What is your goal?", ["Lose Weight", "Maintain Weight", "Gain Muscle"])
 max_calories = st.number_input("Daily calorie limit (min:1500, max:4000)", min_value=1500, max_value=4000, step=50)
 
-cravings = st.text_input("What are you craving today? (choose from: sweet, savoury, chocolate, filling, nutty, protein, creamy, fresh)").lower()
+cravings = st.selectbox("What are you craving today?", ["sweet", "savoury", "filling", "nutty", "protein", "creamy", "fresh"]).lower()
 favourites_input = st.text_input("Your favourite foods? (comma separated)").lower()
 favourite_foods = [f.strip() for f in favourites_input.split(",") if f]
 
@@ -119,8 +162,14 @@ if st.button("Generate Diet Plan"):
     if plan:
         st.subheader("🍴 Your Meal Plan")
         for meal, food, servings, cal in plan: # Assuming your create_meal_plan returns (meal, food, servings, total_food_cal)
-            st.write(f"**{meal}**: {servings} serving(s) of {food.title()} — {cal} kcal")
-        st.success(f"Total Calories: {total} kcal")
+            st.markdown(
+    f"<p style='color:black; font-size:16px;'><b>{meal}</b>: {servings} serving(s) of {food.title()} — {cal} kcal</p>",
+    unsafe_allow_html=True
+)
+        st.markdown(
+    f"<p style='color:black; font-size:18px; font-weight:bold; text-align:center;'>Total Calories: {total} kcal</p>",
+    unsafe_allow_html=True
+)
 
         # Prepare data for pie chart - NOW THIS CODE IS INSIDE THE 'IF PLAN' BLOCK
         # This assumes plan items are (meal_name, food_name, servings, total_food_cal)
@@ -129,7 +178,7 @@ if st.button("Generate Diet Plan"):
 
         # Plot pie chart
         fig, ax = plt.subplots()
-        ax.pie(meal_cals, labels=meal_names, autopct='%1.1f%%', startangle=90)
+        ax.pie(meal_cals, labels=meal_names, autopct='%1.1f%%', startangle=45)
         ax.set_title("Calories per Meal")
         st.pyplot(fig)
 
@@ -137,73 +186,69 @@ if st.button("Generate Diet Plan"):
         st.error("Could not create a plan with your inputs. Try changing your cravings or foods.")
 
 def set_background():
-    st.markdown(
+     st.markdown(
         """
         <style>
         .stApp {
             background: linear-gradient(-23deg, #ff512a, #5bffa6, #ffc67e, #ffa989);
-            background-size: 200% 200%;
-            animation: gradientBG 20s ease infinite;
+            background-size: 500% 500%;
+            animation: gradientBG 10s ease infinite;
         }
-
+ 
         @keyframes gradientBG {
             0% {background-position: 0% 50%;}
             50% {background-position: 100% 50%;}
             100% {background-position: 0% 50%;}
-        }  
-        
-        /* Specific overrides if needed (e.g., if you wanted some parts black) */
-        /* For example, if you wanted the pie chart labels black, you'd add: */
-        /*
-        .st-emotion-cache-1f810n4.e1tzin5v2 {
-            fill: black !important;
-            color: white !important;
         }
-        */
-
-        /* Ensures Streamlit's text components are white */
-        .stMarkdown, .stText, .stSuccess, .stError {
-            color: black !important;
+         @keyframes fall {
+            0% {
+                top: -50px;
+                opacity: 1;
+                transform: translateX(0) rotate(0deg);
+            }
+            100% {
+                top: 110vh;
+                opacity: 0.6;
+                transform: translateX(100px) rotate(360deg);
+            }
         }
-
-        /* Labels for input fields */
-        .stSelectbox label, .stNumberInput label, .stTextInput label {
-            color: black !important;
-        }
-
-        /* Text inside the input fields (what the user types or sees selected) */
-        div[data-testid="stTextInput"] input,
-        div[data-testid="stNumberInput"] input {
-            color: white !important;
-        }
-
-        /* Selected value text in the selectbox */
-        div[data-testid="stSelectbox"] div[data-baseweb="select"] div[role="button"] {
-             color: white !important;
-        }
-
-        /* Button text */
-        .stButton > button {
-            color: white !important;
-        }
-
-        /* Ensure options in dropdown (when opened) are readable. */
-        /* This targets the actual text of the options in the dropdown list */
-        .stSelectbox div[role="listbox"] div[role="option"] {
-            color: black !important; /* Set dropdown options to black for contrast */
-            background-color: white !important; /* Give them a white background */
-        }
-        /* If dropdown options are still white or hard to read, you might need to adjust this */
-
-
-        /* Text in the sidebar (if you add one later) */
-        .stSidebar * {
-            color: white !important;
-        }
-
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
  
+        .falling-fruit {
+            position: absolute;
+            width: 40px;
+            top: -50px;
+            z-index: 0;
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+ 
+        .fruit-1 { left: 10%; animation-duration: 6s; animation-delay: 0s; }
+        .fruit-2 { left: 30%; animation-duration: 8s; animation-delay: 1s; }
+        .fruit-3 { left: 50%; animation-duration: 5s; animation-delay: 2s; }
+        .fruit-4 { left: 70%; animation-duration: 7s; animation-delay: 3s; }
+        .fruit-5 { left: 90%; animation-duration: 9s; animation-delay: 4s; }
+        </style>
+ 
+        <!-- Fruit images placed absolutely -->
+        <img class="falling-fruit fruit-1" src="https://cdn-icons-png.flaticon.com/512/590/590685.png" />
+        <img class="falling-fruit fruit-2" src="https://cdn-icons-png.flaticon.com/128/25/25345.png" />
+        <img class="falling-fruit fruit-3" src="https://cdn-icons-png.flaticon.com/512/590/590707.png" />
+        <img class="falling-fruit fruit-4" src="https://cdn-icons-png.flaticon.com/128/765/765608.png" />
+        <img class="falling-fruit fruit-5" src="https://cdn-icons-png.flaticon.com/512/590/590692.png" />
+
+    """,
+        unsafe_allow_html=True)
 set_background()
+
+st.markdown("""
+<style>
+/* Make labels/questions black */
+div.stSelectbox > label, 
+div.stTextInput > label, 
+div.stNumberInput > label {
+    color: black !important;
+    font-weight: bold;
+}
+</style>
+""", unsafe_allow_html=True)
